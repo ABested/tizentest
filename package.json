@@ -1,0 +1,9 @@
+{
+  "name": "dashboard-test",
+  "version": "0.0.1",
+  "description": "Test af app-liste og app-start",
+  "packageType": "app",
+  "appName": "Dashboard Test",
+  "appPath": "index.html",
+  "keys": []
+}

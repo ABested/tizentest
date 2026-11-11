@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Dashboard Test</title>
+<style>
+body{margin:0;background:#111;color:#fff;font:28px sans-serif}
+#log{padding:16px 24px;background:#222;color:#9f9;font-size:22px}
+#list{padding:16px 24px}
+.item{padding:10px 16px;margin:4px 0;border-radius:8px}
+.sel{background:#2a6cf0}
+small{color:#bbb;font-size:20px}
+</style>
+</head>
+<body>
+<div id="log">Starter...</div>
+<div id="list"></div>
+<script>
+var apps = [], sel = 0;
+
+function log(t) { document.getElementById('log').textContent = t; }
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+}
+
+function setSel(n) {
+  if (!apps.length) return;
+  var old = document.getElementById('a' + sel);
+  if (old) old.className = 'item';
+  sel = Math.max(0, Math.min(apps.length - 1, n));
+  var el = document.getElementById('a' + sel);
+  if (el) {
+    el.className = 'item sel';
+    if (el.scrollIntoView) el.scrollIntoView(false);
+  }
+}
+
+function render() {
+  var h = '';
+  for (var i = 0; i < apps.length; i++) {
+    h += '<div class="item" id="a' + i + '">' + esc(apps[i].name) +
+         '<br><small>' + esc(apps[i].id) + '</small></div>';
+  }
+  document.getElementById('list').innerHTML = h;
+  setSel(0);
+}
+
+function launchSelected() {
+  if (!apps.length) return;
+  var a = apps[sel];
+  log('Starter ' + a.name + '...');
+  try {
+    tizen.application.launch(a.id,
+      function () { log('Start OK: ' + a.name); },
+      function (e) { log('Start FEJL: ' + e.name + ' - ' + e.message); });
+  } catch (e) {
+    log('Start EXCEPTION: ' + e.name + ' - ' + e.message);
+  }
+}
+
+document.addEventListener('keydown', function (e) {
+  if (e.keyCode === 38) setSel(sel - 1);
+  else if (e.keyCode === 40) setSel(sel + 1);
+  else if (e.keyCode === 13) launchSelected();
+});
+
+if (typeof tizen === 'undefined' || !tizen.application) {
+  log('FEJL: tizen.application findes ikke her');
+} else {
+  try {
+    tizen.application.getAppsInfo(function (list) {
+      apps = list.map(function (a) { return { id: a.id, name: a.name }; });
+      apps.sort(function (x, y) { return x.name.localeCompare(y.name); });
+      log('Fandt ' + apps.length + ' apps. Op/ned + OK for at starte.');
+      render();
+    }, function (e) {
+      log('getAppsInfo FEJL: ' + e.name + ' - ' + e.message);
+    });
+  } catch (e) {
+    log('getAppsInfo EXCEPTION: ' + e.name + ' - ' + e.message);
+  }
+}
+</script>
+</body>
+</html>
