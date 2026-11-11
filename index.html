@@ -83,11 +83,8 @@ if (typeof tizen === 'undefined' || !tizen.application) {
 }
 var d = [];
 d.push('href: ' + location.href);
-d.push('top===self: ' + (window.top === window.self));
 d.push('tizen: ' + typeof window.tizen);
 d.push('webapis: ' + typeof window.webapis);
-try { d.push('parent.tizen: ' + typeof window.parent.tizen); } catch (e) { d.push('parent: ' + e.name); }
-try { d.push('top.tizen: ' + typeof window.top.tizen); } catch (e) { d.push('top: ' + e.name); }
 d.push('UA: ' + navigator.userAgent);
 document.getElementById('list').innerHTML = d.map(esc).join('<br>');
 </script>
