@@ -81,12 +81,6 @@ if (typeof tizen === 'undefined' || !tizen.application) {
     log('getAppsInfo EXCEPTION: ' + e.name + ' - ' + e.message);
   }
 }
-var d = [];
-d.push('href: ' + location.href);
-d.push('tizen: ' + typeof window.tizen);
-d.push('webapis: ' + typeof window.webapis);
-d.push('UA: ' + navigator.userAgent);
-document.getElementById('list').innerHTML = d.map(esc).join('<br>');
 </script>
 </body>
 </html>
