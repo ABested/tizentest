@@ -1,6 +1,6 @@
 {
   "name": "dashboard-test",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "Test af app-liste og app-start",
   "packageType": "app",
   "appName": "Dashboard Test",
